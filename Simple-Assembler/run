@@ -8,4 +8,4 @@ def print_type_a(array):
 
 
 def print_type_b(array):
-    print(str(opcode[array[0]]) + str(reg[array[1]]) + str(format(array[2], '08b')))
+    print(str(opcode[array[0]]) + str(reg[array[1]]) + str(f'{array[2]:08b}')
