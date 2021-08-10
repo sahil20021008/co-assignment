@@ -243,8 +243,8 @@ def main():
     n = len(code) + 1
     length = len(code)
     code_output=[]
-    i=0
-    count=0
+    i = 0
+    count = 0
     while i<n :
         length_code = len(code[i])
         global args
