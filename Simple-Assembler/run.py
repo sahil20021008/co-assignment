@@ -1,4 +1,5 @@
 #NOTE:THIS CODE IS WRITTEN IN PYTHON 3 
+import math
 import re
 import sys
 global qw 
