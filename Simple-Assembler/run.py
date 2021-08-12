@@ -42,62 +42,105 @@ typed = ["ld","st"]
 
 typee = ["jmp","jlt","jgt","je"]
 
+global minsize
+
+minsize = -sys.maxsize - 1
+
+
 def type_a(a):
     unused = "00"
-    re_x = args[1]
-    re_y = args[2]
-    re_z = args[3]
     opcode_num = opcode[a]
     reg_list_temp = list(register_dict.keys())
-    pos1 = reg_list_temp.index(re_x)
-    pos2 = reg_list_temp.index(re_y)
-    pos3 = reg_list_temp.index(re_z)
-    reg_x = reg_values[pos1]
+    pos1 = reg_list_temp.index(args[1])
+    pos2 = reg_list_temp.index(args[2])
+    pos3 = reg_list_temp.index(args[3])
     reg_y = int(reg_values[pos2])
     reg_z = int(reg_values[pos3])
-
-    over = len(bin(max(reg_y,reg_z)))
-
-
     if a == "add":
-
-        if len(bin(reg_y+reg_z)) > over:
+        if reg_y / 2 + reg_z / 2 >= sys.maxsize / 2 or reg_y / 2 + reg_z / 2 <= minsize / 2:
             flags[0] = 1
-
-        elif bin(reg_y)[0] == bin(reg_z)[0]:
-            if  bin(reg_y+reg_z)[0] != bin(reg_z)[0]:
-                flags[0] = 1
-
+        elif bin(reg_y)[0] == bin(reg_z)[0] and bin(reg_y + reg_z)[0] != bin(reg_z)[0]:
+            flags[0] = 1
         else:
             reg_values[pos1] = reg_y + reg_z
-    
     elif a == "sub":
-
-        if bin(reg_z)>bin(reg_y):
+        if reg_z > reg_y:
             flags[0] = 1
             reg_values[pos1] = 0
         else:
             reg_values[pos1] = reg_y - reg_z
-    
     elif a == "mul":
-        if reg_y*reg_z> sys.maxsize:
-            flags[0]=1
-        else :
-            reg_values[pos1]=reg_y*reg_z
-    
+        if abs((reg_y / 2) * (reg_z / 2)) >= sys.maxsize/4:
+            flags[0] = 1
+        else:
+            reg_values[pos1] = reg_y * reg_z
     elif a == "xor":
-        reg_values[pos1] = reg_y^reg_z
-    
+        reg_values[pos1] = reg_y ^ reg_z
     elif a == "or":
-        reg_values[pos1] = reg_y|reg_z
-
-    
+        reg_values[pos1] = reg_y | reg_z
     elif a == "and":
-        reg_values[pos1] = reg_y&reg_z
+        reg_values[pos1] = reg_y & reg_z
     else:
         return "error"
+
+    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
+
+# def type_a(a):
+#     unused = "00"
+#     re_x = args[1]
+#     re_y = args[2]
+#     re_z = args[3]
+#     opcode_num = opcode[a]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(re_x)
+#     pos2 = reg_list_temp.index(re_y)
+#     pos3 = reg_list_temp.index(re_z)
+#     reg_x = reg_values[pos1]
+#     reg_y = int(reg_values[pos2])
+#     reg_z = int(reg_values[pos3])
+
+#     over = len(bin(max(reg_y,reg_z)))
+
+
+#     if a == "add":
+
+#         if len(bin(reg_y+reg_z)) > over:
+#             flags[0] = 1
+
+#         elif bin(reg_y)[0] == bin(reg_z)[0]:
+#             if  bin(reg_y+reg_z)[0] != bin(reg_z)[0]:
+#                 flags[0] = 1
+
+#         else:
+#             reg_values[pos1] = reg_y + reg_z
     
-    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]] 
+#     elif a == "sub":
+
+#         if bin(reg_z)>bin(reg_y):
+#             flags[0] = 1
+#             reg_values[pos1] = 0
+#         else:
+#             reg_values[pos1] = reg_y - reg_z
+    
+#     elif a == "mul":
+#         if reg_y*reg_z> sys.maxsize:
+#             flags[0]=1
+#         else :
+#             reg_values[pos1]=reg_y*reg_z
+    
+#     elif a == "xor":
+#         reg_values[pos1] = reg_y^reg_z
+    
+#     elif a == "or":
+#         reg_values[pos1] = reg_y|reg_z
+
+    
+#     elif a == "and":
+#         reg_values[pos1] = reg_y&reg_z
+#     else:
+#         return "error"
+    
+#     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]] 
 
 def type_b(a):
     opcode_num = opcode[str(a)]
