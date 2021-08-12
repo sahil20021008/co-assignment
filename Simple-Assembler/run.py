@@ -46,7 +46,6 @@ global minsize
 
 minsize = -sys.maxsize - 1
 
-
 def type_a(a):
     unused = "00"
     opcode_num = opcode[a]
@@ -61,8 +60,7 @@ def type_a(a):
             flags[0] = 1
         elif bin(reg_y)[0] == bin(reg_z)[0] and bin(reg_y + reg_z)[0] != bin(reg_z)[0]:
             flags[0] = 1
-        else:
-            reg_values[pos1] = reg_y + reg_z
+        reg_values[pos1] = reg_y + reg_z
     elif a == "sub":
         if reg_z > reg_y:
             flags[0] = 1
@@ -72,8 +70,7 @@ def type_a(a):
     elif a == "mul":
         if abs((reg_y / 2) * (reg_z / 2)) >= sys.maxsize/4:
             flags[0] = 1
-        else:
-            reg_values[pos1] = reg_y * reg_z
+        reg_values[pos1] = reg_y * reg_z
     elif a == "xor":
         reg_values[pos1] = reg_y ^ reg_z
     elif a == "or":
