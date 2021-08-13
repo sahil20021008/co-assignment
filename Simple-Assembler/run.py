@@ -138,7 +138,7 @@ def type_c(a):
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(reg_x)
     if a=="mov" and args[2]=="FLAGS" :
-        reg_values[pos1]=reg_values[8]
+        reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
     pos2 = reg_list_temp.index(reg_y)
     opcode_num = opcode[a]
     
