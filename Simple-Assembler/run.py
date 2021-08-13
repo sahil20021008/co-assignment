@@ -189,15 +189,15 @@ def type_d(a,count):
     reg_x=args[1]
     pos1 = reg_list_temp.index(reg_x)
     x=args[2]
-    qw[x]= count 
+    #qw[x]= count 
     opcode_num = opcode[a]
 
     if a=="ld":
         if args[2] not in var_name :
             return -1
         else : 
-            reg_values[pos1]=count
-
+            #reg_values[pos1]=count
+            reg_values[pos1]=qw[x]
     elif a=="st":
         if args[2] not in var_name :
             return -1
