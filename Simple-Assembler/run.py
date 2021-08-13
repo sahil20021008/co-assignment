@@ -141,26 +141,42 @@ def type_a(a):
 
 def type_b(a):
     opcode_num = opcode[str(a)]
-    temp="00000000"
-    
-    reg_x = args[1]
     reg_list_temp = list(register_dict.keys())
-    pos1 = reg_list_temp.index(reg_x)
-    n=int(args[2][1:])
-    q = bin(n).replace("0b", "")
-    
+    pos1 = reg_list_temp.index(args[1])
+    n = int(args[2][1:])
+    if n < 0 or n > 255:
+        return "error"
     if a == "mov":
-        reg_values[pos1] = args[2][1:]
-        opcode_num="00010"
-    
+        reg_values[pos1] = n
     elif a == "rs":
-        reg_values[pos1] = reg_values[pos1]>>args[2]
-    
+        reg_values[pos1] = reg_values[pos1] >> n
     elif a == "ls":
-        reg_values[pos1] = reg_values[pos1]<<args[2]
-    g=temp[0:int(len(temp)-len(q))]
+        reg_values[pos1] = reg_values[pos1] << n
+    q = f'{n:08b}'
+    return opcode_num + register_dict[args[1]] + q
+
+# def type_b(a):
+#     opcode_num = opcode[str(a)]
+#     temp="00000000"
     
-    return opcode_num + register_dict[args[1]] + g + q
+#     reg_x = args[1]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(reg_x)
+#     n=int(args[2][1:])
+#     q = bin(n).replace("0b", "")
+    
+#     if a == "mov":
+#         reg_values[pos1] = args[2][1:]
+#         opcode_num="00010"
+    
+#     elif a == "rs":
+#         reg_values[pos1] = reg_values[pos1]>>args[2]
+    
+#     elif a == "ls":
+#         reg_values[pos1] = reg_values[pos1]<<args[2]
+#     g=temp[0:int(len(temp)-len(q))]
+    
+#     return opcode_num + register_dict[args[1]] + g + q
 
 def type_c(a):
     unused = "00000"
