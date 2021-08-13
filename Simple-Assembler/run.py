@@ -47,8 +47,11 @@ def type_a(a):
     re_x = args[1]
     re_y = args[2]
     re_z = args[3]
-    if len(args)!=4 :
+    if len(args) != 4:
         return -1
+    for i in range(1, 4):
+        if args[i] not in register_dict:  # changed the dictionary
+            return -1
     opcode_num = opcode[a]
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(re_x)
@@ -57,43 +60,87 @@ def type_a(a):
     reg_x = int(reg_values[pos1])
     reg_y = int(reg_values[pos2])
     reg_z = int(reg_values[pos3])
-    print (2)
+    # print(2) i didnt understand print(2) is it for debugging or is it necessary?
     if a == "add":
-
-        if bin(reg_y)[0] == bin(reg_z)[0]:
-            if  bin(reg_y+reg_z)[0] != bin(reg_z)[0]:
-                flags[0] = 1
-
-        else:
-            reg_values[pos1] = reg_y + reg_z
-    
+        if reg_y+reg_z>65535:#bin(reg_y)[0] == bin(reg_z)[0]:
+            #if bin(reg_y + reg_z)[0] != bin(reg_z)[0]:
+            flags[0] = 1
+        reg_values[pos1] = reg_y + reg_z  # overflow value is added
     elif a == "sub":
-
-        if bin(reg_z)>bin(reg_y):
+        if bin(reg_z) > bin(reg_y):
             flags[0] = 1
             reg_values[pos1] = 0
         else:
             reg_values[pos1] = reg_y - reg_z
-    
     elif a == "mul":
-        if reg_y*reg_z> sys.maxsize:
-            flags[0]=1
-        else :
-            reg_values[pos1]=reg_y*reg_z
-    
+        if reg_y*reg_z>65535:#reg_y * reg_z > sys.maxsize:
+            flags[0] = 1
+        reg_values[pos1] = reg_y * reg_z  # overflowed value
     elif a == "xor":
-        reg_values[pos1] = reg_y^reg_z
-    
+        reg_values[pos1] = reg_y ^ reg_z
     elif a == "or":
-        reg_values[pos1] = reg_y|reg_z
-
-    
+        reg_values[pos1] = reg_y | reg_z
     elif a == "and":
-        reg_values[pos1] = reg_y&reg_z
+        reg_values[pos1] = reg_y & reg_z
     else:
         return "error"
+    if reg_values[pos1]>65535:
+        reg_values[pos1]-=65536
+    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
+
+
+# def type_a(a):
+#     unused = "00"
+#     re_x = args[1]
+#     re_y = args[2]
+#     re_z = args[3]
+#     if len(args)!=4 :
+#         return -1
+#     opcode_num = opcode[a]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(re_x)
+#     pos2 = reg_list_temp.index(re_y)
+#     pos3 = reg_list_temp.index(re_z)
+#     reg_x = int(reg_values[pos1])
+#     reg_y = int(reg_values[pos2])
+#     reg_z = int(reg_values[pos3])
+#     print (2)
+#     if a == "add":
+
+#         if bin(reg_y)[0] == bin(reg_z)[0]:
+#             if  bin(reg_y+reg_z)[0] != bin(reg_z)[0]:
+#                 flags[0] = 1
+
+#         else:
+#             reg_values[pos1] = reg_y + reg_z
     
-    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]] 
+#     elif a == "sub":
+
+#         if bin(reg_z)>bin(reg_y):
+#             flags[0] = 1
+#             reg_values[pos1] = 0
+#         else:
+#             reg_values[pos1] = reg_y - reg_z
+    
+#     elif a == "mul":
+#         if reg_y*reg_z> sys.maxsize:
+#             flags[0]=1
+#         else :
+#             reg_values[pos1]=reg_y*reg_z
+    
+#     elif a == "xor":
+#         reg_values[pos1] = reg_y^reg_z
+    
+#     elif a == "or":
+#         reg_values[pos1] = reg_y|reg_z
+
+    
+#     elif a == "and":
+#         reg_values[pos1] = reg_y&reg_z
+#     else:
+#         return "error"
+    
+#     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]] 
 
 def type_b(a):
     opcode_num = opcode[str(a)]
