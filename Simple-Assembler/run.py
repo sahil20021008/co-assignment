@@ -54,6 +54,13 @@ typed = ["ld","st"]
 
 typee = ["jmp","jlt","jgt","je"]
 
+def flagger(a=0, b=0, c=0, d=0):
+    flags[0] = a
+    flags[1] = b
+    flags[2] = c
+    flags[3] = d
+    reg_values[8] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
+
 def type_a(a):
     unused = "00"
     if len(args) != 4:
