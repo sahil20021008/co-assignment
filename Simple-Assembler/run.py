@@ -163,7 +163,7 @@ def type_c(a):
 
         n=reg_values[pos2]
         q = bin(n).replace("0b", "")
-        v=~n
+        reg_values[pos1] = ~n #v=~n
         
 
     elif a=="cmp" :
