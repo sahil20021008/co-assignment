@@ -27,8 +27,8 @@ register_dict = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"10
 flags=[0,0,0,0]
 
 reg_values = [0,0,0,0,0,0,0,0,"000000000000"+str(flags[0])+str(flags[1])+str(flags[2])+str(flags[3])]
-
-opcode = {'add':'00000','sub':'00001','mov':'00010', 'mov':'00011', 'ld':'00100', 'st':'00101', 'mul':'00110', 
+#'mov':'00010',
+opcode = {'add':'00000','sub':'00001', 'mov':'00011', 'ld':'00100', 'st':'00101', 'mul':'00110', 
 'div':'00111', 'rs':'01000', 'ls':'01001', 'xor':'01010', 'or':'01011', 'and':'01100', 'not':'01101', 
 'cmp':'01110', 'jmp':'01111', 'jlt':'10000', 'jgt':'10001', 'je':'10010', 'hlt':'10011'}
 
@@ -144,26 +144,52 @@ def type_a(a):
 
 def type_b(a):
     opcode_num = opcode[str(a)]
-    temp="00000000"
-    
+    temp = "00000000"
+
     reg_x = args[1]
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(reg_x)
-    n=int(args[2][1:])
+    n = int(args[2][1:])
+    boo=args[2][1:].isdigit()
+    if not boo:
+        return "error"
+    if n<0 or n>255:
+        return "error"
     q = bin(n).replace("0b", "")
-    
     if a == "mov":
-        reg_values[pos1] = args[2][1:]
-        opcode_num="00010"
-    
+        reg_values[pos1] = n
+        opcode_num = "00010"
     elif a == "rs":
-        reg_values[pos1] = reg_values[pos1]>>n
-    
+        reg_values[pos1] = reg_values[pos1] >> n
     elif a == "ls":
-        reg_values[pos1] = reg_values[pos1]<<n
-    g=temp[0:int(len(temp)-len(q))]
-    
+        reg_values[pos1] = reg_values[pos1] << n
+    g = temp[0:int(len(temp) - len(q))]
+
     return opcode_num + register_dict[args[1]] + g + q
+
+
+# def type_b(a):
+#     opcode_num = opcode[str(a)]
+#     temp="00000000"
+    
+#     reg_x = args[1]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(reg_x)
+#     n=int(args[2][1:])
+#     q = bin(n).replace("0b", "")
+    
+#     if a == "mov":
+#         reg_values[pos1] = args[2][1:]
+#         opcode_num="00010"
+    
+#     elif a == "rs":
+#         reg_values[pos1] = reg_values[pos1]>>n
+    
+#     elif a == "ls":
+#         reg_values[pos1] = reg_values[pos1]<<n
+#     g=temp[0:int(len(temp)-len(q))]
+    
+#     return opcode_num + register_dict[args[1]] + g + q
 
 def type_c(a):
     unused = "00000"
