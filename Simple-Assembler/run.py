@@ -81,28 +81,38 @@ def type_a(a):
     reg_z = int(reg_values[pos3])
     if a == "add":
         if reg_y+reg_z>65535:
-            flags[0] = 1
+            flagger(1) #flags[0] = 1
+        else:
+            flagger()
         reg_values[pos1] = reg_y + reg_z  
     elif a == "sub":
         if bin(reg_z) > bin(reg_y):
-            flags[0] = 1
+            flagger(1) #flags[0] = 1
             reg_values[pos1] = 0
         else:
+            flagger()
             reg_values[pos1] = reg_y - reg_z
     elif a == "mul":
         if reg_y*reg_z>65535:
-            flags[0] = 1
+            flagger(1) #flags[0] = 1
+        else:
+            flagger()
         reg_values[pos1] = reg_y * reg_z 
     elif a == "xor":
+        flagger()
         reg_values[pos1] = reg_y ^ reg_z
     elif a == "or":
+        flagger()
         reg_values[pos1] = reg_y | reg_z
     elif a == "and":
+        flagger()
         reg_values[pos1] = reg_y & reg_z
     else:
         return "error"
-    if reg_values[pos1]>65535:
-        reg_values[pos1]-=65536
+#     if reg_values[pos1]>65535:
+#         reg_values[pos1]-=65536
+    while reg_values[pos1] > 65535: #replaced overflow if else with while loop
+        reg_values[pos1] -= 65536
     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
 def type_b(a):
@@ -112,13 +122,15 @@ def type_b(a):
     reg_x = args[1]
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(reg_x)
-    n = int(args[2][1:])
+    #n = int(args[2][1:])
     boo=args[2][1:].isdigit()
     if not boo:
         return "error"
+    n = int(args[2][1:])#moved n after checking if int
     if n<0 or n>255:
         return "error"
     q = bin(n).replace("0b", "")
+    flagger()
     if a == "mov":
         reg_values[pos1] = n
         opcode_num = "00010"
@@ -126,6 +138,10 @@ def type_b(a):
         reg_values[pos1] = reg_values[pos1] >> n
     elif a == "ls":
         reg_values[pos1] = reg_values[pos1] << n
+        if reg_values[pos1] > 65535:#added overflow check
+            flagger(1)
+    while reg_values[pos1] > 65535: #added overflow condition
+        reg_values[pos1] -= 65536
     g = temp[0:int(len(temp) - len(q))]
 
     return opcode_num + register_dict[args[1]] + g + q
@@ -137,30 +153,35 @@ def type_c(a):
         
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(reg_x)
-    if a=="mov" and args[2]=="FLAGS" :
-        reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
+#     if a=="mov" and args[2]=="FLAGS" :
+#         reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
+        
     pos2 = reg_list_temp.index(reg_y)
     opcode_num = opcode[a]
     
-    
-    if a=="mov" :
+    if a=="mov" and args[2]=="FLAGS" :#moved it below
+        reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
+        flagger()
+    elif a=="mov" :#turned if to elif
         opcode_num="00011"
         reg_values[pos1]=reg_values[pos2]
-
+        flagger()
     elif a=="div" :
         x=reg_values[pos1]
         y=reg_values[pos2]
         if x==0 and y==0 :
             q=0
             r=0
+        elif y==0:
+            return "error"
         else :
             q = x//y
             r = x%y
         reg_values[0]=q 
         reg_values[1]=r
-
+        flagger()
     elif a=="not":
-
+        flagger()
         n=reg_values[pos2]
         q = bin(n).replace("0b", "")
         reg_values[pos1] = ~n #v=~n
@@ -172,16 +193,16 @@ def type_c(a):
         y=int(reg_values[pos2])
 
         if x>y :
-
-            flags[1]=1 
+            flagger(b=1)
+            #flags[1]=1 
 
         elif x<y : 
-
-            flags[2]=1
+            flagger(c=1)
+            #flags[2]=1
 
         elif x==y :
 
-            flags[0]=1
+            flagger(d=1)#flags[0]=1 this set overflow flag instead of equal flag
 
         else : 
 
@@ -214,7 +235,7 @@ def type_d(a,count):
             return -1
         else :
             qw[x]=reg_values[pos1]
-
+    flagger()
     g=temp[0:int(len(temp)-len(q))]
 
     return opcode_num+register_dict[args[1]]+g+q
@@ -293,6 +314,7 @@ def type_e(a):
             g=temp[0:int(len(temp)-len(x))]
             d=opcode_num+"000"+g+x
     list_i0_memadd_i1_bin = [j,d]
+    flagger()
     return list_i0_memadd_i1_bin    
 
 def main():
