@@ -395,13 +395,11 @@ def main():
             else :
                 k=k+1
     
-    '''
+    
     var=sys.stdout
     for code_out_put in code :
         var.write(code_out_put)
-        '''
-    for cop in code :
-        print(cop)
+        
    
     
             
