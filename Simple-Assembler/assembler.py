@@ -430,7 +430,7 @@ def starter(arg,count1):
     elif args[0] in typed :
         code_out = type_d(args[0],count1)
         if code_out==-1 :
-            code_output.append("ERROR on line :" + str(count1) + " ,variable name already taken\n")
+            code_output.append("ERROR on line :" + str(count1) + " ,variable name already taken")
 
         elif code_out == -2:
             code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type D should have 3 arguments\n")
@@ -445,7 +445,7 @@ def starter(arg,count1):
         code_out = type_e(args[0],count1)
 
         if code_out[0] == -1 :
-            code_output.append("Error on line :" + str(count1) + " , use of undefined label\n")
+            code_output.append("Error on line " + str(count1) + " use of undefined label " +"\n")
             return 0
 
         elif code_out == -2:
@@ -458,7 +458,7 @@ def starter(arg,count1):
             return code_out[0]
 
         else :
-            code_output.append("Error on line :" + str(count1) + "\n")
+            code_output.append("ERROR on line :" + str(count1) + "\n")
             return 0
     elif args[0] == "hlt" :
         code_output.append("1001100000000000\n")
@@ -470,6 +470,7 @@ def starter(arg,count1):
     elif args[0]=="" :
             return 0
     else:
-        code_output.append("Error on line :" + str(count1) + "\n")
+        code_output.append("ERROR on line :" + str(count1) + "\n")
         return 0
-main()
+main() 
+
