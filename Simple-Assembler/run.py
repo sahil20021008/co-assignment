@@ -1,4 +1,3 @@
-#NOTE:THIS CODE IS WRITTEN IN PYTHON 3 
 import math
 
 import re
@@ -61,13 +60,13 @@ def flagger(a=0, b=0, c=0, d=0):
     flags[3] = d
     reg_values[8] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
 
-def type_a(a):
+def type_a(a,count):
     unused = "00"
     if len(args) != 4:
         return -1
     for i in range(1, 4):
         if args[i] not in register_dict:
-            return -1
+            return -2
     re_x = args[1]
     re_y = args[2]
     re_z = args[3]
@@ -115,7 +114,7 @@ def type_a(a):
         reg_values[pos1] -= 65536
     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
-def type_b(a):
+def type_b(a,count1):
     opcode_num = opcode[str(a)]
     temp = "00000000"
 
@@ -125,10 +124,10 @@ def type_b(a):
     #n = int(args[2][1:])
     boo=args[2][1:].isdigit()
     if not boo:
-        return "error"
+        return "Type error on line:" + str(count1) + " , int expected"
     n = int(args[2][1:])#moved n after checking if int
     if n<0 or n>255:
-        return "error"
+        return "Error on line :" + str(count1) + " , illegal immediate value\n"
     q = bin(n).replace("0b", "")
     flagger()
     if a == "mov":
@@ -146,7 +145,7 @@ def type_b(a):
 
     return opcode_num + register_dict[args[1]] + g + q
 
-def type_c(a):
+def type_c(a,count1):
     unused = "00000"
     reg_x = args[1] 
     reg_y = args[2]
@@ -158,14 +157,19 @@ def type_c(a):
         
     pos2 = reg_list_temp.index(reg_y)
     opcode_num = opcode[a]
+
+    if len(args)!=3:
+        return "Syntax error on line :" + str(count1) + " ,instructions of type C should have 3 arguments\n"
     
-    if a=="mov" and args[2]=="FLAGS" :#moved it below
+    elif a=="mov" and args[2]=="FLAGS" :#moved it below
         reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
         flagger()
+        
     elif a=="mov" :#turned if to elif
         opcode_num="00011"
         reg_values[pos1]=reg_values[pos2]
         flagger()
+        
     elif a=="div" :
         x=reg_values[pos1]
         y=reg_values[pos2]
@@ -173,13 +177,14 @@ def type_c(a):
             q=0
             r=0
         elif y==0:
-            return "error"
+            return "ZeroDivisionError on line:" + str(count1) + " ,integer division by zero\n"
         else :
             q = x//y
             r = x%y
         reg_values[0]=q 
         reg_values[1]=r
         flagger()
+        
     elif a=="not":
         flagger()
         n=reg_values[pos2]
@@ -206,17 +211,17 @@ def type_c(a):
 
         else : 
 
-            return "error in code"
+            return "Error"
     
     else : 
     
-        return "error in code "
+        return "Error"
     
-    return opcode_num+unused+register_dict[args[1]]+register_dict[args[2]]
+    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]]
 
 def type_d(a,count):
+
     n=count
-    
     q = bin(n).replace("0b", "")
     reg_list_temp = list(register_dict.keys())
     temp="00000000"
@@ -224,6 +229,9 @@ def type_d(a,count):
     pos1 = reg_list_temp.index(reg_x)
     x=args[2] 
     opcode_num = opcode[a]
+
+    if len(args)!=3:
+        return -2
 
     if a=="ld":
         if args[2] not in var_name :
@@ -238,14 +246,19 @@ def type_d(a,count):
     flagger()
     g=temp[0:int(len(temp)-len(q))]
 
-    return opcode_num+register_dict[args[1]]+g+q
+    return opcode_num + register_dict[args[1]] + g + q
         
-def type_e(a):
+def type_e(a,count1):
     opcode_num = opcode[a]
     q=args[1]+":"
     type_e_dict_temp = list(type_e_dict.keys())
     temp="00000000"
-    if a=="jmp":
+
+    if len(args)!=2:
+        return -2
+    
+
+    elif a=="jmp":
         if q not in type_e_dict_temp :
             return [-1,-1]
         else :
@@ -313,8 +326,10 @@ def type_e(a):
             x = bin(j).replace("0b", "")
             g=temp[0:int(len(temp)-len(x))]
             d=opcode_num+"000"+g+x
+            
     list_i0_memadd_i1_bin = [j,d]
     flagger()
+    
     return list_i0_memadd_i1_bin    
 
 def main():
@@ -355,7 +370,7 @@ def main():
             else :
                 continue
         if k in count_error :
-            code_output.append("ERROR\n")
+            code_output.append("ERROR on line :" + str(count1) + "\n")
             k=k+1
         else :
             x=starter(args,count1)
@@ -372,46 +387,60 @@ def starter(arg,count1):
     global args
     args=arg
     if len(args)==0 :
-        code_output.append("ERROR\n")
+        code_output.append("General Syntax Error on line :" + str(count1) + "\n")
         return 0
     if args[0] in typea   :
-        code_out = type_a(args[0])
+        code_out = type_a(args[0],count1)
         if code_out==-1 :
-            code_output.append("ERROR\n")
-        else :
+            code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type A should have 4 arguments\n")
+        elif code_out == -2:
+            code_output.append("Error on line :" + str(count1) + " , use of undefined register\n")
+        else:
             code_output.append(code_out+"\n")
         return 0
     elif args[0] in typeb and args[2][0:1]=="$" :
-        code_out = type_b(args[0])
+        code_out = type_b(args[0],count1)
         code_output.append(code_out+"\n")
         return 0
 
     elif args[0] in typec :
-        code_out = type_c(args[0])
+        code_out = type_c(args[0],count1)
         code_output.append(code_out+"\n")
         return 0
 
     elif args[0] in typed :
         code_out = type_d(args[0],count1)
         if code_out==-1 :
-            code_output.append("ERROR\n")
-        else :
+            code_output.append("ERROR on line :" + str(count1) + " ,variable name already taken")
+
+        elif code_out == -2:
+            code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type D should have 3 arguments\n")
+
+        else:
             code_output.append(code_out+"\n")
+
         return 0
             
 
     elif args[0] in typee :
         print(args[0])
-        code_out = type_e(args[0])
-        if code_out[0]==-1 :
+        code_out = type_e(args[0],count1)
+
+        if code_out[0] == -1 :
             code_output.append(str(code_out[1])+"asf\n")
             return 0
+
+        elif code_out == -2:
+            code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type E should have 2 arguments\n")
+
+
         elif code_out[0]<=n-1 :
             code_output.append(code_out[1]+"\n")
             i= code_out[0]
             return code_out[0]
+
         else :
-            code_output.append("ERROR\n")
+            code_output.append("ERROR on line :" + str(count1) + "\n")
             return 0
     elif args[0] == "hlt" :
         code_output.append("1001100000000000\n")
@@ -423,7 +452,6 @@ def starter(arg,count1):
     elif args[0]=="" :
             return 0
     else:
-        code_output.append("ERROR\n")
+        code_output.append("ERROR on line :" + str(count1) + "\n")
         return 0
-main()            
-     
+main()          
