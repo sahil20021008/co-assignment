@@ -399,8 +399,6 @@ def main():
     var=sys.stdout
     for i in code:
         var.write(i)
-    for j in code:
-        var.write('\n'+j)
          
 def starter(arg,count1):
     global args
