@@ -397,7 +397,7 @@ def main():
     
     
     var=sys.stdout
-    for i in code:
+    for i in code_output:
         var.write(i)
          
 def starter(arg,count1):
