@@ -394,8 +394,6 @@ def main():
                 k=x
             else :
                 k=k+1
-    if code [ int ((len(code)-1))] != "hlt" :
-        code_output.append("Code not ending with hlt: " +"\n")
     
     '''
     var=sys.stdout
