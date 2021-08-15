@@ -1,3 +1,6 @@
+import sys
+from sys import stdin 
+
 import math
 
 import re
@@ -333,8 +336,10 @@ def type_e(a,count1):
     return list_i0_memadd_i1_bin    
 
 def main():
-    file = open('code.txt', 'r')
-    code = file.readlines()
+    for line in stdin :
+        if line=="":
+            break
+        code.append(line)
     global n
     n = len(code) + 1
     length = len(code)
@@ -380,11 +385,9 @@ def main():
                 k=k+1
     if code [ int ((len(code)-1))] != "hlt" :
         code_output.append("Code not ending with hlt: " +"\n")
-        
-    
-    file1 = open('output.txt', 'w')
-    file1.writelines(code_output)
-    file1.close()
+    var=sys.stdout
+    for code_out_put in arr :
+        var.write(code_out_put)
             
 def starter(arg,count1):
     global args
