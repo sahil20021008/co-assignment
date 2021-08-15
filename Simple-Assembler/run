@@ -378,6 +378,9 @@ def main():
                 k=x
             else :
                 k=k+1
+    if code [ int ((len(code)-1))] != "hlt" :
+        code_output.append("Code not ending with hlt: " +"\n")
+        
     
     file1 = open('output.txt', 'w')
     file1.writelines(code_output)
@@ -386,8 +389,10 @@ def main():
 def starter(arg,count1):
     global args
     args=arg
-    if len(args)==0 :
+    if len(args)==0 and count1 in count_error :
         code_output.append("General Syntax Error on line :" + str(count1) + "\n")
+        return 0
+    if len(args)==0 :
         return 0
     if args[0] in typea   :
         code_out = type_a(args[0],count1)
@@ -454,4 +459,5 @@ def starter(arg,count1):
     else:
         code_output.append("ERROR on line :" + str(count1) + "\n")
         return 0
-main()          
+main() 
+         
