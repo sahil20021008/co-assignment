@@ -308,11 +308,15 @@ def type_e(a,count1):
                 g=temp[0:int(len(temp)-len(x))]
                 d=opcode_num+"000"+g+x     
         else :
-            j=-1
-            j1=type_e_dict[q]-1-len(var_name)
-            x = bin(j1).replace("0b", "")
-            g=temp[0:int(len(temp)-len(x))]
-            d=opcode_num+"000"+g+x
+            if q not in type_e_dict_temp :
+                return [-1,-1]
+            else :
+                
+                j=-1
+                j1=type_e_dict[q]-1-len(var_name)
+                x = bin(j1).replace("0b", "")
+                g=temp[0:int(len(temp)-len(x))]
+                d=opcode_num+"000"+g+x
             
 
     elif a=="je":
@@ -327,11 +331,14 @@ def type_e(a,count1):
                 g=temp[0:int(len(temp)-len(x))]
                 d=opcode_num+"000"+g+x     
         else : 
-            j=-1
-            j=type_e_dict[q]
-            x = bin(j).replace("0b", "")
-            g=temp[0:int(len(temp)-len(x))]
-            d=opcode_num+"000"+g+x
+            if q not in type_e_dict_temp :
+                return [-1,-1]
+            else :
+                j=-1
+                j=type_e_dict[q]
+                x = bin(j).replace("0b", "")
+                g=temp[0:int(len(temp)-len(x))]
+                d=opcode_num+"000"+g+x
             
     list_i0_memadd_i1_bin = [j,d]
     flagger()
