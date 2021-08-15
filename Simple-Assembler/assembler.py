@@ -442,11 +442,10 @@ def starter(arg,count1):
             
 
     elif args[0] in typee :
-        print(args[0])
         code_out = type_e(args[0],count1)
 
         if code_out[0] == -1 :
-            code_output.append(str(code_out[1])+"asf\n")
+            code_output.append(str(code_out[1])+"\n")
             return 0
 
         elif code_out == -2:
