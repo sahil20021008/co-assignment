@@ -336,6 +336,7 @@ def type_e(a,count1):
     return list_i0_memadd_i1_bin    
 
 def main():
+    code=[]
     for line in stdin :
         if line=="":
             break
