@@ -397,12 +397,11 @@ def main():
     
     
     var=sys.stdout
-    for code_out_put in code :
-        var.write(code_out_put)
-        
-   
-    
-            
+    for i in code:
+        var.write(i)
+    for j in code:
+        var.write('\n'+j)
+         
 def starter(arg,count1):
     global args
     args=arg
