@@ -445,7 +445,7 @@ def starter(arg,count1):
         code_out = type_e(args[0],count1)
 
         if code_out[0] == -1 :
-            code_output.append("Error on line " + str(count1) + " use of undefined label " +"\n")
+            code_output.append(str(code_out[1])+"\n")
             return 0
 
         elif code_out == -2:
