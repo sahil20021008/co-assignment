@@ -71,6 +71,8 @@ def type_a(a,count):
      for i in range(1, 4):
          if args[i] not in register_dict:
              return -2
+     if args[3]=="FLAGS":
+         return -3
      re_x = args[1]
      re_y = args[2]
      re_z = args[3]
@@ -416,6 +418,8 @@ def starter(arg,count1):
             code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type A should have 4 arguments\n")
         elif code_out == -2:
             code_output.append("Error on line :" + str(count1) + " , Typos in instruction name or register name\n")
+        elif code_out == -3:
+            code_output.append("Error on line :"+str(count1)+", Illegal use of FLAGS register\n")
         else:
             code_output.append(code_out+"\n")
         return 0
