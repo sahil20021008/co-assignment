@@ -63,59 +63,102 @@ def flagger(a=0, b=0, c=0, d=0):
     flags[3] = d
     reg_values[8] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
 
-def type_a(a,count):
-    unused = "00"
-    if len(args) != 4:
-        return -1
-    for i in range(1, 4):
-        if args[i] not in register_dict:
-            return -2
-    re_x = args[1]
-    re_y = args[2]
-    re_z = args[3]
-    opcode_num = opcode[a]
-    reg_list_temp = list(register_dict.keys())
-    pos1 = reg_list_temp.index(re_x)
-    pos2 = reg_list_temp.index(re_y)
-    pos3 = reg_list_temp.index(re_z)
-    reg_x = int(reg_values[pos1])
+def type_a(a):
+    reg_list_temp=list(register_dict.values())
+    pos1=reg_list_temp.index(args[1])
+    pos2 = reg_list_temp.index(args[2])
+    pos3 = reg_list_temp.index(args[3])
     reg_y = int(reg_values[pos2])
     reg_z = int(reg_values[pos3])
-    if a == "add":
-        if reg_y+reg_z>65535:
-            flagger(1) #flags[0] = 1
+    if a == "00000":
+        if reg_y + reg_z > 65535:
+            flagger(1)  # flags[0] = 1
         else:
             flagger()
-        reg_values[pos1] = reg_y + reg_z  
-    elif a == "sub":
+        reg_values[pos1] = reg_y + reg_z
+    elif a == "00001":
         if bin(reg_z) > bin(reg_y):
-            flagger(1) #flags[0] = 1
+            flagger(1)  # flags[0] = 1
             reg_values[pos1] = 0
         else:
             flagger()
             reg_values[pos1] = reg_y - reg_z
-    elif a == "mul":
-        if reg_y*reg_z>65535:
-            flagger(1) #flags[0] = 1
+    elif a == "00110":
+        if reg_y * reg_z > 65535:
+            flagger(1)  # flags[0] = 1
         else:
             flagger()
-        reg_values[pos1] = reg_y * reg_z 
-    elif a == "xor":
+        reg_values[pos1] = reg_y * reg_z
+    elif a == "01010":
         flagger()
         reg_values[pos1] = reg_y ^ reg_z
-    elif a == "or":
+    elif a == "01011":
         flagger()
         reg_values[pos1] = reg_y | reg_z
-    elif a == "and":
+    elif a == "01100":
         flagger()
         reg_values[pos1] = reg_y & reg_z
     else:
         return "error"
-#     if reg_values[pos1]>65535:
-#         reg_values[pos1]-=65536
-    while reg_values[pos1] > 65535: #replaced overflow if else with while loop
+    while reg_values[pos1] > 65535:
         reg_values[pos1] -= 65536
-    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
+    return str(
+        f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
+
+    
+# def type_a(a,count):
+#     unused = "00"
+#     if len(args) != 4:
+#         return -1
+#     for i in range(1, 4):
+#         if args[i] not in register_dict:
+#             return -2
+#     re_x = args[1]
+#     re_y = args[2]
+#     re_z = args[3]
+#     opcode_num = opcode[a]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(re_x)
+#     pos2 = reg_list_temp.index(re_y)
+#     pos3 = reg_list_temp.index(re_z)
+#     reg_x = int(reg_values[pos1])
+#     reg_y = int(reg_values[pos2])
+#     reg_z = int(reg_values[pos3])
+#     if a == "add":
+#         if reg_y+reg_z>65535:
+#             flagger(1) #flags[0] = 1
+#         else:
+#             flagger()
+#         reg_values[pos1] = reg_y + reg_z  
+#     elif a == "sub":
+#         if bin(reg_z) > bin(reg_y):
+#             flagger(1) #flags[0] = 1
+#             reg_values[pos1] = 0
+#         else:
+#             flagger()
+#             reg_values[pos1] = reg_y - reg_z
+#     elif a == "mul":
+#         if reg_y*reg_z>65535:
+#             flagger(1) #flags[0] = 1
+#         else:
+#             flagger()
+#         reg_values[pos1] = reg_y * reg_z 
+#     elif a == "xor":
+#         flagger()
+#         reg_values[pos1] = reg_y ^ reg_z
+#     elif a == "or":
+#         flagger()
+#         reg_values[pos1] = reg_y | reg_z
+#     elif a == "and":
+#         flagger()
+#         reg_values[pos1] = reg_y & reg_z
+#     else:
+#         return "error"
+# #     if reg_values[pos1]>65535:
+# #         reg_values[pos1]-=65536
+#     while reg_values[pos1] > 65535: #replaced overflow if else with while loop
+#         reg_values[pos1] -= 65536
+#     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
 def type_b(a,count1):
     opcode_num = opcode[str(a)]
