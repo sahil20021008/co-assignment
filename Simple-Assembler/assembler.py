@@ -71,8 +71,8 @@ def type_a(a,count):
      for i in range(1, 4):
          if args[i] not in register_dict:
              return -2
-     if args[3]=="FLAGS":
-         return -3
+         if args[3]=="FLAGS":#illegal use of flag
+             return -3
      re_x = args[1]
      re_y = args[2]
      re_z = args[3]
