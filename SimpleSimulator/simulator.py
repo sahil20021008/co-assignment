@@ -162,36 +162,55 @@ def type_a(a):
 #         reg_values[pos1] -= 65536
 #     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
-def type_b(a,count1):
-    opcode_num = opcode[str(a)]
-    temp = "00000000"
-
+def type_b(a, count1):
     reg_x = args[1]
-    reg_list_temp = list(register_dict.keys())
+    reg_list_temp = list(register_dict.values())
     pos1 = reg_list_temp.index(reg_x)
-    #n = int(args[2][1:])
-    boo=args[2][1:].isdigit()
-    if not boo:
-        return "Type error on line:" + str(count1) + " , int expected"
-    n = int(args[2][1:])#moved n after checking if int
-    if n<0 or n>255:
-        return "Error on line :" + str(count1) + " , illegal immediate value\n"
-    q = bin(n).replace("0b", "")
+    n=int(args[2],2)
     flagger()
-    if a == "mov":
+    if a == "00010":
         reg_values[pos1] = n
-        opcode_num = "00010"
-    elif a == "rs":
+    elif a == "01000":
         reg_values[pos1] = reg_values[pos1] >> n
-    elif a == "ls":
+    elif a == "01001":
         reg_values[pos1] = reg_values[pos1] << n
-        if reg_values[pos1] > 65535:#added overflow check
+        if reg_values[pos1] > 65535:  # added overflow check
             flagger(1)
-    while reg_values[pos1] > 65535: #added overflow condition
+    while reg_values[pos1] > 65535:  # added overflow condition
         reg_values[pos1] -= 65536
-    g = temp[0:int(len(temp) - len(q))]
+    return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
-    return opcode_num + register_dict[args[1]] + g + q
+
+# def type_b(a,count1):
+#     opcode_num = opcode[str(a)]
+#     temp = "00000000"
+
+#     reg_x = args[1]
+#     reg_list_temp = list(register_dict.keys())
+#     pos1 = reg_list_temp.index(reg_x)
+#     #n = int(args[2][1:])
+#     boo=args[2][1:].isdigit()
+#     if not boo:
+#         return "Type error on line:" + str(count1) + " , int expected"
+#     n = int(args[2][1:])#moved n after checking if int
+#     if n<0 or n>255:
+#         return "Error on line :" + str(count1) + " , illegal immediate value\n"
+#     q = bin(n).replace("0b", "")
+#     flagger()
+#     if a == "mov":
+#         reg_values[pos1] = n
+#         opcode_num = "00010"
+#     elif a == "rs":
+#         reg_values[pos1] = reg_values[pos1] >> n
+#     elif a == "ls":
+#         reg_values[pos1] = reg_values[pos1] << n
+#         if reg_values[pos1] > 65535:#added overflow check
+#             flagger(1)
+#     while reg_values[pos1] > 65535: #added overflow condition
+#         reg_values[pos1] -= 65536
+#     g = temp[0:int(len(temp) - len(q))]
+
+#     return opcode_num + register_dict[args[1]] + g + q
 
 def type_c(a,count1):
     unused = "00000"
