@@ -415,7 +415,7 @@ def starter(arg,count1):
         if code_out==-1 :
             code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type A should have 4 arguments\n")
         elif code_out == -2:
-            code_output.append("Error on line :" + str(count1) + " , use of undefined register\n")
+            code_output.append("Error on line :" + str(count1) + " , Typos in instruction name or register name\n")
         else:
             code_output.append(code_out+"\n")
         return 0
