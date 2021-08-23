@@ -221,39 +221,33 @@ def type_b(a,arg,count1):
 
 #     return opcode_num + register_dict[args[1]] + g + q
 
-def type_c(a,count1):
+def type_c(a,arg,pc):
     unused = "00000"
-    reg_x = args[1] 
-    reg_y = args[2]
+    reg_x = arg[slice(10,13)] 
+    reg_y = arg[slice(13,16)]
         
-    reg_list_temp = list(register_dict.keys())
+    reg_list_temp = list(register_dict.values())
     pos1 = reg_list_temp.index(reg_x)
 #     if a=="mov" and args[2]=="FLAGS" :
-#         reg_values[pos1]=int(reg_values[7],2)#reg_values[8]
+#         reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
         
     pos2 = reg_list_temp.index(reg_y)
-    opcode_num = opcode[a]
 
-    if len(args)!=3:
-        return "Syntax error on line :" + str(count1) + " ,instructions of type C should have 3 arguments\n"
-    
-    elif a=="mov" and args[2]=="FLAGS" :#moved it below
-        reg_values[pos1]=int(reg_values[7],2)#reg_values[8]
-        flagger()
+#    if len(args)!=3:
+#        return "Syntax error on line :" + str(pc) + " ,instructions of type C should have 3 arguments\n"
         
-    elif a=="mov" :#turned if to elif
-        opcode_num="00011"
+    if a=="00011" :#turned if to elif
         reg_values[pos1]=reg_values[pos2]
         flagger()
         
-    elif a=="div" :
+    elif a=="00111" :
         x=reg_values[pos1]
         y=reg_values[pos2]
         if x==0 and y==0 :
             q=0
             r=0
         elif y==0:
-            return "ZeroDivisionError on line:" + str(count1) + " ,integer division by zero\n"
+            return "ZeroDivisionError on line:" + str(pc) + " ,integer division by zero\n"
         else :
             q = x//y
             r = x%y
@@ -261,14 +255,14 @@ def type_c(a,count1):
         reg_values[1]=r
         flagger()
         
-    elif a=="not":
+    elif a=="01101":
         flagger()
         n=reg_values[pos2]
         q = bin(n).replace("0b", "")
         reg_values[pos1] = ~n #v=~n
         
 
-    elif a=="cmp" :
+    elif a=="01110" :
 
         x=int(reg_values[pos1])
         y=int(reg_values[pos2])
@@ -291,9 +285,8 @@ def type_c(a,count1):
     
     else : 
     
-        return "Error"
-    
-    return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]]
+        return "Error"  
+    return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
 def type_d(a,count):
 
