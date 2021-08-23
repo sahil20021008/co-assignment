@@ -166,7 +166,8 @@ def type_c(a,count1):
 
     if len(args)!=3:
         return "Syntax error on line :" + str(count1) + " ,instructions of type C should have 3 arguments\n"
-    
+    elif args[1]=="FLAGS":#illegal flag
+        return -3
     elif a=="mov" and args[2]=="FLAGS" :#moved it below
         reg_values[pos1]=int(reg_values[7],2)#reg_values[8]
         flagger()
@@ -430,7 +431,10 @@ def starter(arg,count1):
 
     elif args[0] in typec :
         code_out = type_c(args[0],count1)
-        code_output.append(code_out+"\n")
+        if code_out== -3:
+            code_output.append("Error on line :"+str(count1)+", Illegal use of FLAGS register\n")
+        else:
+            code_output.append(code_out+"\n")
         return 0
 
     elif args[0] in typed :
