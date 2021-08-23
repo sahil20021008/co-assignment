@@ -288,35 +288,26 @@ def type_c(a,arg,pc):
         return "Error"  
     return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
-def type_d(a,count):
+def type_d(a,arg,pc):
 
-    n=count
+    n=pc
     q = bin(n).replace("0b", "")
-    reg_list_temp = list(register_dict.keys())
+    reg_list_temp = list(register_dict.values())
     temp="00000000"
-    reg_x=args[1]
+    reg_x=arg[slice(5,8)]
     pos1 = reg_list_temp.index(reg_x)
-    x=args[2] 
-    opcode_num = opcode[a]
+    x=arg[slice(8,16)] 
 
-    if len(args)!=3:
-        return -2
-
-    if a=="ld":
-        if args[2] not in var_name :
-            return -1
-        else : 
-            reg_values[pos1]=qw[x]
-    elif a=="st":
-        if args[2] not in var_name :
-            return -1
-        else :
-            qw[x]=reg_values[pos1]
+    if a=="00100":
+        reg_values[pos1]=qw[x]
+    elif a=="00101":
+        qw[x]=reg_values[pos1]
+        
     flagger()
     g=temp[0:int(len(temp)-len(q))]
+    return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
-    return opcode_num + register_dict[args[1]] + g + q
-        
+
 def type_e(a,count1):
     opcode_num = opcode[a]
     q=args[1]+":"
@@ -468,42 +459,29 @@ def main():
          
 def starter(arg,count1):
     global args
-    args=arg
-    if len(args)==0 and count1 in count_error :
+    type_checker = arg[slice(5)]
+    args = type_checker
+    if len(args)==0:
         code_output.append("General Syntax Error on line :" + str(count1) + "\n")
         return 0
-    if len(args)==0 :
+    
+    if args in typea:
+        code_out = type_a(args,arg,count1)
+        code_output.append(code_out+"\n")
         return 0
-    if args[0] in typea   :
-        code_out = type_a(args[0],count1)
-        if code_out==-1 :
-            code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type A should have 4 arguments\n")
-        elif code_out == -2:
-            code_output.append("Error on line :" + str(count1) + " , use of undefined register\n")
-        else:
-            code_output.append(code_out+"\n")
-        return 0
-    elif args[0] in typeb and args[2][0:1]=="$" :
-        code_out = type_b(args[0],count1)
+    elif args in typeb:
+        code_out = type_b(args,arg,count1)
         code_output.append(code_out+"\n")
         return 0
 
-    elif args[0] in typec :
-        code_out = type_c(args[0],count1)
+    elif args in typec:
+        code_out = type_c(args,arg,count1)
         code_output.append(code_out+"\n")
         return 0
 
-    elif args[0] in typed :
-        code_out = type_d(args[0],count1)
-        if code_out==-1 :
-            code_output.append("ERROR on line :" + str(count1) + " ,variable name already taken"+"\n")
-
-        elif code_out == -2:
-            code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type D should have 3 arguments\n")
-
-        else:
-            code_output.append(code_out+"\n")
-
+    elif args in typed :
+        code_out = type_d(args,arg,count1)
+        code_output.append(code_out+"\n")
         return 0
             
 
@@ -528,16 +506,11 @@ def starter(arg,count1):
         else :
             code_output.append("ERROR on line :" + str(count1) + "\n")
             return 0
-    elif args[0] == "hlt" :
-        code_output.append("1001100000000000\n")
+        
+    elif args == "10011":
+        code_output.append(str(f'{count1:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}' + "\n")
         return n
-    elif args[0]=="var" :
-        if args[1] not in var_name :
-            var_name.append(args[1])
-        return 0
-    elif args[0]=="" :
-            return 0
     else:
         code_output.append("ERROR on line :" + str(count1) + "\n")
         return 0
-main()
+main()          
