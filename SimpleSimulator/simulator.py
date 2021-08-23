@@ -34,6 +34,11 @@ global list_error
 
 global count_error
 
+global mem_dump
+
+mem_dump = ["0000000000000000"]*256
+
+
 count_error=[]
 
 list_error = []
@@ -42,27 +47,27 @@ register_dict = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"10
 
 flags=[0,0,0,0]
 
-reg_values = [0,0,0,0,0,0,0,0,"000000000000"+str(flags[0])+str(flags[1])+str(flags[2])+str(flags[3])]
+reg_values = [0,0,0,0,0,0,0,"000000000000"+str(flags[0])+str(flags[1])+str(flags[2])+str(flags[3])]
 opcode = {'add':'00000','sub':'00001', 'mov':'00011', 'ld':'00100', 'st':'00101', 'mul':'00110', 
 'div':'00111', 'rs':'01000', 'ls':'01001', 'xor':'01010', 'or':'01011', 'and':'01100', 'not':'01101', 
 'cmp':'01110', 'jmp':'01111', 'jlt':'10000', 'jgt':'10001', 'je':'10010', 'hlt':'10011'}
-
-typea = ["add", "sub","mul","xor","or","and"]
-
-typeb = ["mov","rs","ls"]
-
-typec = ["mov","div","cmp","not"]
-
-typed = ["ld","st"]
-
-typee = ["jmp","jlt","jgt","je"]
+typea = ["00000", "00001", "00110", "01010", "01011", "01100"]
+# typea = ["add", "sub","mul","xor","or","and"]
+typeb = ["00010", "01000", "01001"]
+# typeb = ["mov","rs","ls"]
+typec = ["00011", "00111", "01110", "01101"]
+# typec = ["mov","div","cmp","not"]
+typed = ["00100", "00101"]
+# typed = ["ld","st"]
+typee = ["01111", "10000", "10001", "10010"]
+# typee = ["jmp","jlt","jgt","je"]
 
 def flagger(a=0, b=0, c=0, d=0):
     flags[0] = a
     flags[1] = b
     flags[2] = c
     flags[3] = d
-    reg_values[8] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
+    reg_values[7] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
 
 def type_a(a,count):
     unused = "00"
@@ -404,6 +409,8 @@ def main():
 def starter(arg,count1):
     global args
     args=arg
+    type_checker = arg[slice(5)]
+    args = type_checker
     if len(args)==0 and count1 in count_error :
         code_output.append("General Syntax Error on line :" + str(count1) + "\n")
         return 0
