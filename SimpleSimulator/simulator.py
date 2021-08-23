@@ -66,13 +66,23 @@ def flagger(a=0, b=0, c=0, d=0):
     flags[3] = d
     reg_values[7] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
 
-def type_a(a):
+def type_a(a,arg,pc):
+    
+
+    r1 = arg[slice(7,10)]
+    r2 = arg[slice(10,13)]
+    r3 = arg[slice(13,16)]
+
     reg_list_temp=list(register_dict.values())
-    pos1=reg_list_temp.index(args[1])
-    pos2 = reg_list_temp.index(args[2])
-    pos3 = reg_list_temp.index(args[3])
+
+    
+    pos1 = reg_list_temp.index(r1)
+    pos2 = reg_list_temp.index(r2)
+    pos3 = reg_list_temp.index(r3)
+    
     reg_y = int(reg_values[pos2])
     reg_z = int(reg_values[pos3])
+    
     if a == "00000":
         if reg_y + reg_z > 65535:
             flagger(1)  # flags[0] = 1
@@ -161,11 +171,11 @@ def type_a(a):
 #         reg_values[pos1] -= 65536
 #     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
-def type_b(a, count1):
-    reg_x = args[1]
+def type_b(a,arg,count1):
+    reg_x = arg[slice(5,8)]
     reg_list_temp = list(register_dict.values())
     pos1 = reg_list_temp.index(reg_x)
-    n=int(args[2],2)
+    n=int(arg[slice(8,16)],2)
     flagger()
     if a == "00010":
         reg_values[pos1] = n
