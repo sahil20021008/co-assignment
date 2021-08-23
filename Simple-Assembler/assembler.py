@@ -240,7 +240,8 @@ def type_d(a,count):
 
     if len(args)!=3:
         return -2
-
+    if args[1]=="FLAGS":
+        return -3
     if a=="ld":
         if args[2] not in var_name :
             return -1
@@ -444,7 +445,8 @@ def starter(arg,count1):
 
         elif code_out == -2:
             code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type D should have 3 arguments\n")
-
+        elif code_out == -3:
+            code_output.append("Error on line :"+str(count1)+", Illegal use of FLAGS register\n")
         else:
             code_output.append(code_out+"\n")
 
