@@ -44,7 +44,7 @@ register_dict = {"R0":"000","R1":"001","R2":"010","R3":"011","R4":"100","R5":"10
 
 flags=[0,0,0,0]
 
-reg_values = [0,0,0,0,0,0,0,0,"000000000000"+str(flags[0])+str(flags[1])+str(flags[2])+str(flags[3])]
+reg_values = [0,0,0,0,0,0,0,"000000000000"+str(flags[0])+str(flags[1])+str(flags[2])+str(flags[3])]
 opcode = {'add':'00000','sub':'00001', 'mov':'00011', 'ld':'00100', 'st':'00101', 'mul':'00110', 
 'div':'00111', 'rs':'01000', 'ls':'01001', 'xor':'01010', 'or':'01011', 'and':'01100', 'not':'01101', 
 'cmp':'01110', 'jmp':'01111', 'jlt':'10000', 'jgt':'10001', 'je':'10010', 'hlt':'10011'}
@@ -64,7 +64,7 @@ def flagger(a=0, b=0, c=0, d=0):
     flags[1] = b
     flags[2] = c
     flags[3] = d
-    reg_values[8] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
+    reg_values[7] = "000000000000" + str(flags[0]) + str(flags[1]) + str(flags[2]) + str(flags[3])
 
 def type_a(a):
     reg_list_temp=list(register_dict.values())
@@ -105,8 +105,7 @@ def type_a(a):
         return "error"
     while reg_values[pos1] > 65535:
         reg_values[pos1] -= 65536
-    return str(
-        f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
+    return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
 # def type_a(a,count):
 #     unused = "00"
@@ -220,7 +219,7 @@ def type_c(a,count1):
     reg_list_temp = list(register_dict.keys())
     pos1 = reg_list_temp.index(reg_x)
 #     if a=="mov" and args[2]=="FLAGS" :
-#         reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
+#         reg_values[pos1]=int(reg_values[7],2)#reg_values[8]
         
     pos2 = reg_list_temp.index(reg_y)
     opcode_num = opcode[a]
@@ -229,7 +228,7 @@ def type_c(a,count1):
         return "Syntax error on line :" + str(count1) + " ,instructions of type C should have 3 arguments\n"
     
     elif a=="mov" and args[2]=="FLAGS" :#moved it below
-        reg_values[pos1]=int(reg_values[8],2)#reg_values[8]
+        reg_values[pos1]=int(reg_values[7],2)#reg_values[8]
         flagger()
         
     elif a=="mov" :#turned if to elif
