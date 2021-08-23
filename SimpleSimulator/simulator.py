@@ -308,99 +308,41 @@ def type_d(a,arg,pc):
     return str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'
 
 
-def type_e(a,count1):
-    opcode_num = opcode[a]
-    q=args[1]+":"
-    type_e_dict_temp = list(type_e_dict.keys())
-    temp="00000000"
-
-    if len(args)!=2:
-        return -2
+def type_e(a,arg,pc):
     
+    type_e_dict_temp = list(type_e_dict.values())
+    q = int(arg[slice(8,16)],2)
+    
+    if a=="01111":
+        q=q       
 
-    elif a=="jmp":
-        if q not in type_e_dict_temp :
-            return [-1,-1]
-        else :
-            pos1 = type_e_dict_temp.index(q)
-            j=type_e_dict[q]
-            x = bin(j).replace("0b", "")
-            g=temp[0:int(len(temp)-len(x))]
-            d=opcode_num+"000"+g+q
-
-    elif a=="jlt" :
+    elif a=="10000" :
 
         if flags[1]==1 :
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else :
-                pos1 = type_e_dict_temp.index(q)
-                j=type_e_dict[q]
-                x = bin(j).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x
-                
+            q=q
+          
         else : 
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else:
-                j=-1
-                j=type_e_dict[q]
-                x = bin(j).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x
+            q=-1
             
-
-    
-    elif a=="jgt":
+    elif a=="10001":
 
         if flags[2]==1 :
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else :
-                pos1 = type_e_dict_temp.index(q)
-                j=type_e_dict[q]-1
-                j1=type_e_dict[q]-1-len(var_name)
-                x = bin(j1).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x     
+            q=q  
         else :
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else :
-                
-                j=-1
-                j1=type_e_dict[q]-1-len(var_name)
-                x = bin(j1).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x
+            q=-1
             
 
-    elif a=="je":
+    elif a=="10010":
 
         if flags[3]==1 :
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else :
-                pos1 = type_e_dict_temp.index(q)
-                j=type_e_dict[q]
-                x = bin(j).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x     
+            q=q
         else : 
-            if q not in type_e_dict_temp :
-                return [-1,-1]
-            else :
-                j=-1
-                j=type_e_dict[q]
-                x = bin(j).replace("0b", "")
-                g=temp[0:int(len(temp)-len(x))]
-                d=opcode_num+"000"+g+x
-            
-    list_i0_memadd_i1_bin = [j,d]
+            q=-1 
+    d=str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + f'{reg_values[7]:016b}'       
+    list_i0_memadd_i1_bin = [q,d]
     flagger()
     
-    return list_i0_memadd_i1_bin    
+    return list_i0_memadd_i1_bin 
 
 def main():
     code=[]
