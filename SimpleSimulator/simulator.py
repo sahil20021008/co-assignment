@@ -171,7 +171,7 @@ def type_a(a,arg,pc):
 #         reg_values[pos1] -= 65536
 #     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
-def type_b(a,arg,count1):
+def type_b(a,arg,pc):
     reg_x = arg[slice(5,8)]
     reg_list_temp = list(register_dict.values())
     pos1 = reg_list_temp.index(reg_x)
