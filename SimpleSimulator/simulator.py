@@ -309,7 +309,10 @@ def main():
     var=sys.stdout
     for i in code_output:
         var.write(i)
-        zero_dump_counter += 1
+        # zero_dump_counter += 1
+    for i in code:
+        var.write(i)
+        zero_dump_counter+=1
     for x in reg_values :
         if type(x)==str :
             if x != "0000000000000000" :
