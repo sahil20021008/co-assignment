@@ -398,7 +398,7 @@ def main():
             code_output.append("ERROR on line :" + str(count1) + "\n")
             k=k+1
         else :
-            x=starter(args,count1)
+            x=starter(args,count1,code)
             if x!=0 :
                 k=x
             else :
@@ -409,7 +409,7 @@ def main():
     for i in code_output:
         var.write(i)
          
-def starter(arg,count1):
+def starter(arg,count1,code):
     global args
     args=arg
     if len(args)==0 and count1 in count_error :
