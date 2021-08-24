@@ -115,59 +115,6 @@ def type_a(a,arg,pc):
         reg_values[pos1] -= 65536
     return str(str(f'{count1:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + reg_values[7])
 
-# def type_a(a,count):
-#     unused = "00"
-#     if len(args) != 4:
-#         return -1
-#     for i in range(1, 4):
-#         if args[i] not in register_dict:
-#             return -2
-#     re_x = args[1]
-#     re_y = args[2]
-#     re_z = args[3]
-#     opcode_num = opcode[a]
-#     reg_list_temp = list(register_dict.keys())
-#     pos1 = reg_list_temp.index(re_x)
-#     pos2 = reg_list_temp.index(re_y)
-#     pos3 = reg_list_temp.index(re_z)
-#     reg_x = int(reg_values[pos1])
-#     reg_y = int(reg_values[pos2])
-#     reg_z = int(reg_values[pos3])
-#     if a == "00000":
-#         if reg_y+reg_z>65535:
-#             flagger(1) #flags[0] = 1
-#         else:
-#             flagger()
-#         reg_values[pos1] = reg_y + reg_z  
-#     elif a == "00001":
-#         if bin(reg_z) > bin(reg_y):
-#             flagger(1) #flags[0] = 1
-#             reg_values[pos1] = 0
-#         else:
-#             flagger()
-#             reg_values[pos1] = reg_y - reg_z
-#     elif a == "00110":
-#         if reg_y*reg_z>65535:
-#             flagger(1) #flags[0] = 1
-#         else:
-#             flagger()
-#         reg_values[pos1] = reg_y * reg_z 
-#     elif a == "01010":
-#         flagger()
-#         reg_values[pos1] = reg_y ^ reg_z
-#     elif a == "01011":
-#         flagger()
-#         reg_values[pos1] = reg_y | reg_z
-#     elif a == "01100":
-#         flagger()
-#         reg_values[pos1] = reg_y & reg_z
-#     else:
-#         return "error"
-# #     if reg_values[pos1]>65535:
-# #         reg_values[pos1]-=65536
-#     while reg_values[pos1] > 65535: #replaced overflow if else with while loop
-#         reg_values[pos1] -= 65536
-#     return opcode_num + unused + register_dict[args[1]] + register_dict[args[2]] + register_dict[args[3]]
 
 def type_b(a,arg,pc):
     reg_x = arg[slice(5,8)]
@@ -257,7 +204,6 @@ def type_c(a,arg,pc):
     else : 
     
         return "Error"
-    print(reg_values)
     return str(str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + reg_values[7])
 
 def type_d(a,arg,pc):
@@ -268,7 +214,8 @@ def type_d(a,arg,pc):
     temp="00000000"
     reg_x=arg[slice(5,8)]
     pos1 = reg_list_temp.index(reg_x)
-    x=arg[slice(8,16)] 
+    x=arg[slice(8,16)]
+    
 
     if a=="00100":
         reg_values[pos1]=qw[x]
@@ -352,10 +299,31 @@ def main():
         count1=count1+1
         k += 1
         
+    zero_dump_counter = 0
     
     file1 = open('output.txt', 'w')
     file1.writelines(code_output)
-    file1.writelines(code)
+    for item in code:
+        file1.writelines(item)
+        zero_dump_counter += 1
+    for x in reg_values :
+        if type(x)==str :
+            if x != "0000000000000000" :
+                file1.writelines("\n")
+                file1.writelines(str(f'{x:016b}'))
+                zero_dump_counter += 1
+                
+        elif str(f'{x:016b}')!="0000000000000000" :
+            file1.writelines("\n")
+            file1.writelines(str(f'{x:016b}'))
+            zero_dump_counter += 1
+        else :
+            continue 
+
+    while(zero_dump_counter!=256):
+        file1.writelines("\n")
+        file1.writelines("0000000000000000")
+        zero_dump_counter += 1
     file1.close()
             
 def starter(arg,count1):
@@ -406,4 +374,5 @@ def starter(arg,count1):
         code_output.append("madhav on line :" + str(count1) + "\n")
         return 0
 main()
+
         
