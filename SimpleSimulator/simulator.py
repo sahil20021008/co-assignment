@@ -265,8 +265,13 @@ def type_e(a,arg,pc):
     return list_i0_memadd_i1_bin 
 
 def main():
-    file = open('code.txt', 'r')
-    code = file.readlines()
+    code=[]
+    for line in stdin :
+        if line=="":
+            break
+        code.append(line)
+#     file = open('code.txt', 'r')
+#     code = file.readlines()
     global n
     n = len(code) + 1
     length = len(code)
@@ -301,30 +306,50 @@ def main():
         
     zero_dump_counter = 0
     
-    file1 = open('output.txt', 'w')
-    file1.writelines(code_output)
-    for item in code:
-        file1.writelines(item)
+    var=sys.stdout
+    for i in code_output:
+        var.write(i)
         zero_dump_counter += 1
     for x in reg_values :
         if type(x)==str :
             if x != "0000000000000000" :
-                file1.writelines("\n")
-                file1.writelines(str(f'{x:016b}'))
+                var.write("\n")
+                var.write(str(f'{x:016b}'))
                 zero_dump_counter += 1
-                
         elif str(f'{x:016b}')!="0000000000000000" :
-            file1.writelines("\n")
-            file1.writelines(str(f'{x:016b}'))
+            var.write("\n")
+            var.write(str(f'{x:016b}'))
             zero_dump_counter += 1
         else :
             continue 
-
     while(zero_dump_counter!=256):
-        file1.writelines("\n")
-        file1.writelines("0000000000000000")
+        var.write("\n")
+        var.write("0000000000000000")
         zero_dump_counter += 1
-    file1.close()
+#     file1 = open('output.txt', 'w')
+#     file1.writelines(code_output)
+#     for item in code:
+#         file1.writelines(item)
+#         zero_dump_counter += 1
+#     for x in reg_values :
+#         if type(x)==str :
+#             if x != "0000000000000000" :
+#                 file1.writelines("\n")
+#                 file1.writelines(str(f'{x:016b}'))
+#                 zero_dump_counter += 1
+                
+#         elif str(f'{x:016b}')!="0000000000000000" :
+#             file1.writelines("\n")
+#             file1.writelines(str(f'{x:016b}'))
+#             zero_dump_counter += 1
+#         else :
+#             continue 
+
+#     while(zero_dump_counter!=256):
+#         file1.writelines("\n")
+#         file1.writelines("0000000000000000")
+#         zero_dump_counter += 1
+#     file1.close()
             
 def starter(arg,count1):
     global args
