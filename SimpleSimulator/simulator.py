@@ -113,7 +113,7 @@ def type_a(a,arg,pc):
         return "error"
     while reg_values[pos1] > 65535:
         reg_values[pos1] -= 65536
-    return str(str(f'{count1:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + reg_values[7])
+    return str(str(f'{pc:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + reg_values[7])
 
 
 def type_b(a,arg,pc):
