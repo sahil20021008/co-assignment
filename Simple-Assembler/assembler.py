@@ -359,7 +359,7 @@ def main():
         code.append(line)
     global n
     n = len(code) + 1
-    length = len(code)
+    #length = len(code)
     global code_output
     code_output=[]
     #checking if hlt last instruction
@@ -478,6 +478,7 @@ def starter(arg,count1,code):
             code_output.append("ERROR on line :" + str(count1) + "\n")
             return 0
     elif args[0] == "hlt" :
+        length = len(code)
         if code[length-1]!="1001100000000000":
             code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
         elif count1 != len(code)-1:
