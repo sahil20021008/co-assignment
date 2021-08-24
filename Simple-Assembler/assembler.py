@@ -475,16 +475,16 @@ def starter(arg,count1,code):
             return code_out[0]
 
         else :
-            code_output.append("ERROR on line :" + str(count1) + "\n")
+            code_output.append("General Syntax Error on line: " + str(count1) + "\n")
             return 0
     elif args[0] == "hlt" :
-        length = len(code)
-        if code[length-1]!="1001100000000000":
-            code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
-        elif count1 != len(code)-1:
-            code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
-        else:
-            code_output.append("1001100000000000\n")
+#         length = len(code)
+#         if code[length-1]!="1001100000000000":
+#             code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
+#         elif count1 != len(code)-1:
+#             code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
+#         else:
+        code_output.append("1001100000000000\n")
         return n
     elif args[0]=="var" :
         if args[1] not in var_name :
