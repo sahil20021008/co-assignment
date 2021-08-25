@@ -444,7 +444,10 @@ def starter(arg,count1,code):
     elif args[0] in typed :
         code_out = type_d(args[0],count1)
         if code_out==-1 :
-            code_output.append("ERROR on line :" + str(count1) + " ,Use of undefined variables"+"\n")
+            if args[0] in type_e_dict:
+                code_output.append("Misuse of labels as variables or vice-versa on line:"+str(count1)+"\n") # labels vs var
+            else:
+                code_output.append("ERROR on line :" + str(count1) + " ,Use of undefined variables"+"\n")
 
         elif code_out == -2:
             code_output.append("Syntax error on line :" + str(count1) + " ,instructions of type D should have 3 arguments\n")
