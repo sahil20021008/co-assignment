@@ -363,8 +363,8 @@ def main():
     global code_output
     code_output=[]
     #checking if hlt last instruction
-#     if code[length-1]!="1001100000000000":
-#         code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
+    if code[length-1]!="hlt":
+        code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
     count=0
     count1=0
     global var_name
@@ -487,10 +487,10 @@ def starter(arg,count1,code):
 #         length = len(code)
 #         if code[length-1]!="1001100000000000":
 #             code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
-#         elif count1 != len(code)-1:
-#             code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
-#         else:
-        code_output.append("1001100000000000\n")
+        if count1 != len(code)-1:
+            code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
+        else:
+            code_output.append("1001100000000000\n")
         return n
     elif args[0]=="var" :
         if args[1] not in var_name :
