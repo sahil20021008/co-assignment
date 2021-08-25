@@ -459,7 +459,10 @@ def starter(arg,count1,code):
     elif args[0] in typee :
         code_out = type_e(args[0],count1)
         if code_out[1] == -1 :
-            code_out.append("Undefined label:" + str(count1) +"\n")
+            if args[1] in var_name:
+                code_out.append("Misuse of labels as variables or vice-versa on line:"+str(count1)+"\n")
+            else:
+                code_out.append("Undefined label:" + str(count1) +"\n")
             return 0
         if code_out[0] == -1 :
             code_output.append(str(code_out[1])+"\n")
