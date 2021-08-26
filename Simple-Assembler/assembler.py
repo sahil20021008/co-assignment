@@ -370,6 +370,8 @@ def main():
     count1=0
     global var_name
     var_name = []
+    global hlt_countert
+    hlt_countert=0
     global type_e_dict
     type_e_dict = {}
     for a in range(0,n-1):
@@ -404,7 +406,8 @@ def main():
                 k=x
             else :
                 k=k+1
-    
+    if hlt_countert==0:
+        code_output.append("ERROR on line: "+str(len(code))+"Missing hlt instruction"+"\n")
     
     var=sys.stdout
     for i in code_output:
@@ -488,6 +491,7 @@ def starter(arg,count1,code):
 #         length = len(code)
 #         if code[length-1]!="1001100000000000":
 #             code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
+        hlt_countert=hlt_countert+1
         if count1 != len(code):
             code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
         else:
