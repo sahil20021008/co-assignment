@@ -360,7 +360,7 @@ def main():
         code.append(line)
     global n
     n = len(code) + 1
-    #length = len(code)
+    length = len(code)
     global code_output
     code_output=[]
     #checking if hlt last instruction
