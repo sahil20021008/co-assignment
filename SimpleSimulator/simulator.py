@@ -313,18 +313,14 @@ def main():
     for i in code:
         var.write(i)
         zero_dump_counter+=1
-    for x in reg_values :
-        if type(x)==str :
-            if x != "0000000000000000" :
-                var.write("\n")
-                var.write(str(f'{x:016b}'))
-                zero_dump_counter += 1
-        elif str(f'{x:016b}')!="0000000000000000" :
-            var.write("\n")
-            var.write(str(f'{x:016b}'))
-            zero_dump_counter += 1
-        else :
-            continue 
+    print_var = list(qw.values())
+    
+    for x in print_var :
+        
+        var.write("\n")
+        var.write(f'{x:016b}')
+        zero_dump_counter += 1
+        
     while(zero_dump_counter!=256):
         var.write("\n")
         var.write("0000000000000000")
