@@ -488,7 +488,7 @@ def starter(arg,count1,code):
 #         length = len(code)
 #         if code[length-1]!="1001100000000000":
 #             code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
-        if count1 != len(code)-1:
+        if count1 != len(code):
             code_output.append("ERROR on line :"+str(count1)+",hlt not being used as the last instruction")# hlt used before last instruction
         else:
             code_output.append("1001100000000000\n")
