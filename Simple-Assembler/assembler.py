@@ -176,7 +176,8 @@ def type_c(a,count1):
         opcode_num="00011"
         reg_values[pos1]=reg_values[pos2]
         flagger()
-        
+    elif args[2]=="FLAGS":# illegal flag
+        return -3
     elif a=="div" :
         x=reg_values[pos1]
         y=reg_values[pos2]
