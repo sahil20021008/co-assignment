@@ -365,7 +365,7 @@ def main():
     code_output=[]
     #checking if hlt last instruction
     if code[length-1]!="hlt":
-        code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction")
+        code_output.append("ERROR on line :"+str(length)+"Missing hlt instruction"+"\n")
     count=0
     count1=0
     global var_name
