@@ -416,6 +416,7 @@ def main():
 def starter(arg,count1,code):
     global args
     args=arg
+    global hlt_countert
     if len(args)==0 and count1 in count_error :
         code_output.append("General Syntax Error on line :" + str(count1) + "\n")
         return 0
