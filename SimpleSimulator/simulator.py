@@ -300,11 +300,36 @@ def main():
                     type_e_dict[str(bv)]=count
     a=list(set(count_error))
     k=0
+    global count1
+    count1=0
+    
+    global list_count
+    list_count = []
+    global timecount
+    timecount = []
+    tcount = 0 
     while k < n-1 :
         args = code[k]
         x=starter(args,count1)
+        if x!=0 :
+            k=x
+            timecount.append(tcount)
+            list_count.append(count1)
+            
+            
+        else:
+            timecount.append(tcount)
+            list_count.append(count1)
+
+        tcount=tcount + 1 
         count1=count1+1
         k += 1
+
+    plt.plot(list_count.timecount)
+    plt.xlabel("Cycle")
+    plt.ylabel("Address")
+    plt.title("Memory Accesses V/S Cycles")
+    plt.show()
         
     zero_dump_counter = 0
     
