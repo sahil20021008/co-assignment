@@ -506,7 +506,7 @@ def starter(arg,count1,code):
     elif args[0]=="" :
             return 0
     else:
-        code_output.append("ERROR on line :" + str(count1) + "\n")
+        code_output.append("ERROR on line : " + str(count1) +" Illegal instruction"+ "\n")
         return 0
 main() 
 
