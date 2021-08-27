@@ -326,7 +326,7 @@ def main():
         
         k += 1
 
-    plt.plot(timecount,list_count,marker='o')
+    plt.scatter(timecount,list_count)
     plt.xlabel("Cycle")
     plt.ylabel("Address")
     plt.title("Memory Accesses V/S Cycles")
