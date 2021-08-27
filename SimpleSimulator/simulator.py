@@ -319,10 +319,11 @@ def main():
             
         else:
             timecount.append(tcount)
-            list_count.append(count1)
+            list_count.append(count1
+            count1=count1+1
 
         tcount=tcount + 1 
-        count1=count1+1
+        
         k += 1
 
     plt.plot(timecount,list_count,marker='o')
