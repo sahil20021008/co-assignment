@@ -280,7 +280,6 @@ def main():
     global code_output
     code_output=[]
     count=0
-    count1=0
     global var_name
     var_name = []
     global type_e_dict
