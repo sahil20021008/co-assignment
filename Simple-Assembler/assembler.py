@@ -404,6 +404,7 @@ def main():
             x=starter(args,count1,code)
             if x!=0 :
                 k=x
+                count1=x
             else :
                 k=k+1
     if hlt_countert==0:
