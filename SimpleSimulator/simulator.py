@@ -4,7 +4,7 @@ from sys import stdin
 
 import math
 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 import re
 
