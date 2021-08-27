@@ -313,6 +313,7 @@ def main():
         x=starter(args,count1)
         if x!=0 :
             k=x
+            count1=x
             timecount.append(tcount)
             list_count.append(count1)
             
