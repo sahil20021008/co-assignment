@@ -420,7 +420,7 @@ def starter(arg,count1):
   
     elif args == "10011":
         code_output.append(str(str(f'{count1:08b}') + " " + f'{reg_values[0]:016b}' + " " + f'{reg_values[1]:016b}' + " " + f'{reg_values[2]:016b}' + " " + f'{reg_values[3]:016b}' + " " + f'{reg_values[4]:016b}' + " " + f'{reg_values[5]:016b}' + " " + f'{reg_values[6]:016b}' + " " + reg_values[7]) + "\n")
-        return n-1
+        return n-2
     
     else:
         code_output.append("madhav on line :" + str(count1) + "\n")
